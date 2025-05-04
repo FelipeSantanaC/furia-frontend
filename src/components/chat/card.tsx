@@ -39,7 +39,7 @@ export function ChatCard() {
     const nome = session?.user?.name?.split(" ")[0] || "Usuário";
     return {
       sender: "Bot da FURIA",
-      text: `Olá, ${nome}! 👋\n\nComo posso ajudar você?\nAbaixo estão alguns tópicos que você pode clicar — ou digite sua dúvida.`,
+      text: `Olá, ${nome}! 👋\n\nComo posso ajudar você?\nAbaixo estão alguns tópicos que você pode clicar — ou digitar sua dúvida.`,
       avatar: logo.src,
       id: "welcome",
     } as Message;
@@ -149,7 +149,7 @@ export function ChatCard() {
           ))}
 
           {isTyping && (
-            <div className="flex gap-3 text-sm text-gray-500 italic animate-pulse px-4">
+            <div className="flex items-center gap-3 text-sm text-gray-500 italic animate-pulse">
               <Avatar>
                 <AvatarFallback>RS</AvatarFallback>
                 <AvatarImage src={logo.src} width={32} height={32} />
@@ -205,6 +205,13 @@ export function ChatCard() {
             placeholder="Envie sua mensagem..."
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey && !isTyping) {
+                e.preventDefault();
+                handleSendMessage();
+              }
+            }}
+            disabled={isTyping}
           />
           <Button
             onClick={handleSendMessage}
